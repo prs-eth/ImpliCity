@@ -1,0 +1,9 @@
+# 3d_v34
+inherit_from: config/train_test/train_base.yaml
+
+training:
+  run_name: ImpliCity-0
+  resume_from: data/ImpliCity_demo/model/ImpliCity-0_pretrained.pt
+
+test:
+  check_point: data/ImpliCity_demo/model/ImpliCity-0_pretrained.pt

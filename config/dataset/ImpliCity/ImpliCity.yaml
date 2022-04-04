@@ -1,0 +1,20 @@
+# Basic info
+inherit_from: config/data/ImpliCity/ImpliCity_base.yaml
+
+# Output
+output:
+  output_folder: data/ImpliCity
+  save_visualization_pc: True
+
+# Query points (num per patch(slide window))
+query_points:
+  uniform_num: 50000
+  surface_count_max: 10000000  # a number large enough for surface sampling (sample N points and del those within R)
+  roof_radius: 0.1 # sample on mesh with radius R, if <0, sample no points on surface
+  facade_radius: 0.2
+  terrain_radius: 0.2
+  surface_offset_std: 0.4  # [m], std of deviation of surface points (valid if sample_surface_radius > 0)
+
+
+
+

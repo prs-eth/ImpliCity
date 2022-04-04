@@ -1,0 +1,58 @@
+# Basic info
+#inherit_from: null
+
+dataset: ImpliCity_base
+build_training_data: true
+gt_mesh_folder: data/source_data/ZUR1/Ground_Truth_3D
+gt_mesh_files:
+  roof: LOD2_DACH_ZUR1.obj  # roof
+  facade: LOD2_WAND_ZUR1.obj  # facade
+  bottom: LOD2_BODEN_ZUR1.obj  # ground (bottom)
+  terrain: LOD0_ZUR1.obj
+  gt: merged_dach_wand_terrain.obj
+  buildings: merged_buildings.obj
+mask_files:
+  gt: data/source_data/ZUR1/Masks/Zurich_ROI1_ground_truth_mask_UTM_32N.tif
+  building: data/source_data/ZUR1/Masks/Zurich_ROI1_building_mask_UTM_32N.tif
+  forest: data/source_data/ZUR1/Masks/Zurich_ROI1_forest_mask_UTM_32N.tif
+  water: data/source_data/ZUR1/Masks/Zurich_ROI1_water_mask_UTM_32N.tif
+out_of_mask_value: 0  # mask value out of mask area
+dilate_building: 8  # dilate 8 pixels (2m)
+input_pointcloud_folder: data/source_data/ZUR1/Point_Clouds
+gt_dsm: data/source_data/ZUR1/Ground_Truth_2.5D/Zurich_ROI1_GT_UTM_32N_ellipsoidal_h_GRS80.tif
+
+# Output
+output:
+  output_folder: data/ImpliCity_base
+  save_visualization_pc: True  # save point clouds as separate .ply file
+
+lock_seed: True
+
+# Patches: big chunks -> small patches
+chunk:
+  chunk_x: [ 463209.875, 463657.875, 464105.875, 464553.875, 465001.875, 465449.875 ]
+  chunk_y: [ 5248149.875, 5249940.125 ]  # [ 5248149.875, 5249045.125, 5249940.125 ]  # split into smaller chunks to speed up training
+  chunk_safe_padding: 200  # padding area only used for occ calculation
+  sliding_window: [ 64, 64 ]
+  sliding_step: 64
+  padding_z: [ 10, 20 ]   # [bottom, top]
+  min_z: 60  # minimum z range
+
+# Query points (num per patch(slide window))
+query_points:
+  uniform_num: 150000
+  surface_count_max: 6000000  # TODO a number large enough for surface sampling (sample N points and del those within R)
+  roof_radius: 1.0  # sample on mesh with radius R, if <0, sample no points on surface
+  facade_radius: 0.2
+  terrain_radius: -1
+  surface_offset_std: 1  # [m], std of deviation of surface points (valid if sample_surface_radius > 0)
+
+# logging
+logging:
+  console_level: 20  # DEBUG=10, INFO=20
+  format: ' %(asctime)s - %(levelname)s - %(funcName)s >> %(message)s'
+  display_inmesh_warning: False
+
+
+
+

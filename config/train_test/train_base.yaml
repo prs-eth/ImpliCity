@@ -1,0 +1,127 @@
+#inherit_from: null
+
+dataset:
+# Full training data
+#  name: ImpliCity
+#  path: data/ImpliCity
+#  dsm_gt_path: data/source_data/ZUR1/Ground_Truth_2.5D/Zurich_ROI1_GT_UTM_32N_ellipsoidal_h_GRS80.tif
+#  mask_files:
+#    gt: data/source_data/ZUR1/Masks/Zurich_ROI1_ground_truth_mask_UTM_32N.tif
+#    building: data/source_data/ZUR1/Masks/Zurich_ROI1_building_mask_UTM_32N.tif
+#    forest: data/source_data/ZUR1/Masks/Zurich_ROI1_forest_mask_UTM_32N.tif
+#    water: data/source_data/ZUR1/Masks/Zurich_ROI1_water_mask_UTM_32N.tif
+#  train_chunks: [ 0, 3, 4 ] # [ 0, 1, 6, 7, 8, 9 ]
+#  val_chunks: [ 2 ]
+#  test_chunks: [ 1 ]
+#  vis_chunks: [ 2 ]
+
+# Demo data
+  name: ImpliCity_demo
+  path: data/ImpliCity_demo/data
+  dsm_gt_path: data/ImpliCity_demo/data/raster/Zurich_ROI1_GT_UTM_32N_ellipsoidal_h_GRS80_demo.tif
+  mask_files:
+    gt: data/ImpliCity_demo/data/raster/Zurich_ROI1_ground_truth_mask_UTM_32N_demo.tif
+    building: data/ImpliCity_demo/data/raster/Zurich_ROI1_building_mask_UTM_32_demo.tif
+    forest: data/ImpliCity_demo/data/raster/Zurich_ROI1_forest_mask_UTM_32N_demo.tif
+    water: data/ImpliCity_demo/data/raster/Zurich_ROI1_water_mask_UTM_32N_demo.tif
+  train_chunks: [ 0 ]
+  val_chunks: [ 0 ]
+  test_chunks: [ 0 ]
+  vis_chunks: [ 0 ]
+
+  normalize:  # normalization in Z direction
+    x_range: [ 0., 1. ]
+    y_range: [ 0., 1. ]
+    z_std: 29.83779098
+    z_shift: 'median'  # ['mean', 'median']
+  patch_size: [ 64, 64 ]  # x, y
+  # subsample points
+  n_input_points: null  # 20000
+  n_query_points: null
+  subsample_val: False
+  use_surface: [ 'roof', 'facade', 'terrain' ]  # merge query points from surface and uniform, ['roof', 'facade']
+  sliding_window: # for regular patching
+    val_strip: [ 32, 32 ]  # x, y
+    vis_strip: [ 16, 16 ]  # for visualization, [x, y]
+    test_strip: [ 16, 16 ]
+
+dataloader:
+  n_workers: 5
+
+model:
+  method: conv_onet
+  encoder: pointnet_local_pool
+  encoder_kwargs:
+    hidden_dim: 32
+    feature_dim: 32  # feature dimension
+    plane_type: [ 'xy' ]
+    plane_resolution: 128
+    scatter_type: max
+    unet: True
+    unet_kwargs:
+      depth: 5
+      merge_mode: concat
+      start_filts: 32
+  decoder: simple_local_multi_class
+  decoder_kwargs:
+    feature_dim: 32
+    sample_mode: bilinear # bilinear / nearest
+    n_blocks: 5
+    hidden_size: 32
+  data_dim: 3
+  multi_label: False  # False: binary occupancy, True: 0-unoccupied, 1-building, 2-terrain
+
+training:
+  run_name: train_base
+  out_dir: out
+  resume_from: null
+  augmentation:
+    flip: True
+    rotate: True
+  random_dataset_length: 6400  # only for dataloader
+  batch_size: 1
+  val_batch_size: 1
+  lock_seed: True
+  optimize_every: 64  # gradient accumulate
+  learning_rate: 0.001
+  scheduler:
+    type: CyclicLR
+    kwargs:
+      base_lr: 0.00005
+      max_lr: 0.001
+      mode: triangular2
+      gamma: 0.9999178
+      step_size_up: 1000
+      step_size_down: 2500
+  model_selection_metric: iou
+  model_selection_mode: maximize
+  print_every: 1
+  visualize_every: 1000
+  validate_every: 100
+  checkpoint_every: 50
+  backup_every: 2000
+  loss_weights:
+    gt: [ 0, 1 ]   # weight for mask value = [0, 1]
+    land: # weight for mask value = [0, 1]
+      building: [ 1., 1. ]
+      forest: [ 1., 0.5 ]
+      water: [ 1., 0.5 ]
+
+test:
+  threshold: 0.5
+  check_point: null
+
+dsm_generation:
+  crs_epsg: 32632
+  pixel_size: [ 0.25, 0.25 ]  # x y
+  h_range: [ -100, 80 ]  # range of h query: [h_min, h_max)
+  fill_empty: True  # fill empty pixels
+  h_resolution_0: 16
+  h_upsampling_steps: 4  # each step h-resolution / 4
+  half_blend_percent: [0.5, 0.5]
+
+logging:
+  filename: logging.log
+  format: ' %(asctime)s - %(levelname)s -%(filename)s - %(funcName)s >> %(message)s'
+  console_level: 20
+  file_level: 10

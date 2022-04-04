@@ -1,0 +1,28 @@
+# mono_v44
+inherit_from: config/train_test/train_base.yaml
+
+dataset:
+  satellite_image: # orthorectified
+    folder: data/ImpliCity_demo/data/raster
+    pairs: [ '18JAN29104120-P1BS-502980288020_01_P005_demo.tif' ]  # could be single image or multiple image
+    normalize:  # image intensity
+      mean: 1132.664
+      std: 487.496
+
+model:
+  method: implicity_onet
+  encoder2: hg_filter
+  encoder2_kwargs:
+    in_channel: 1  # num of input images (correspond to dataset)
+    feature_dim: 32
+    num_hourglass: 2
+    num_stack: 4
+    norm: group
+    hg_down: ave_pool
+
+training:
+  run_name: ImpliCity-mono
+  resume_from: data/ImpliCity_demo/model/ImpliCity-mono_pretrained.pt
+
+test:
+  check_point: data/ImpliCity_demo/model/ImpliCity-mono_pretrained.pt
