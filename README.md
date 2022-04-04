@@ -180,10 +180,11 @@ If you run into any problems or have questions, please contact [Bingxin Ke](mail
 If you find our code or work useful, please cite:
 
 ```bibtex
-@article{stucker2022implicity,
-  title={ImpliCity: City Modeling from Satellite Images with Deep Implicit Occupancy Fields},
+@inproceedings{stucker2022implicity,
+  title={{ImpliCity}: City Modeling from Satellite Images with Deep Implicit Occupancy Fields},
   author={Stucker, Corinne and Ke, Bingxin and Yue, Yuanwen and Huang, Shengyu and Armeni, Iro and Schindler, Konrad},
-  journal={arXiv preprint arXiv:2201.09968},
+  booktitle={ISPRS Annals - ISPRS Congress 2022},
   year={2022}
 }
 ```
+
