@@ -38,8 +38,8 @@ cd ImpliCity
 python3 -m venv venv/implicity_env
 source venv/implicity_env/bin/activate
 
-pip install --upgrade pip setuptools wheel
-pip install -r requirements.txt
+pip3 install --upgrade pip setuptools wheel
+pip3 install -r requirements.txt
 ```
 
 **Manual installation of torch-scatter:**
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 To install the binaries for PyTorch 1.10.0, simply run:
 
 ```bash
-pip install torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+${CUDA}.html
+pip3 install torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+${CUDA}.html
 ```
 where `${CUDA}` should be replaced by either `cpu`, `cu102` (our environment), `cu111`, or `cu113`, depending on your PyTorch installation.
 
