@@ -170,7 +170,8 @@ try:
     logging.info(f"Checkpoint loaded: '{_resume_from_file}'")
 except FileExistsError:
     load_dict = dict()
-    logging.info(f"No checkpoint, train from beginning")
+    logging.info(f"Check point does NOT exist, can not inference.")
+    exit()
 
 # n_epoch = load_dict.get('n_epoch', 0)  # epoch numbers
 n_iter = load_dict.get('n_iter', 0)  # total iterations
