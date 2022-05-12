@@ -15,20 +15,19 @@ from scipy import ndimage
 
 
 class RasterData:
-    # data of different bands
-    _data: Dict = defaultdict()
-    _n_rows: int = None
-    _n_cols: int = None
-    # transformation
-    T: Affine = None
-    T_inv: Affine = None
-    pixel_size: List[float] = None
-    crs: rasterio.crs.CRS = None
-    # tiff file info
-    tiff_file: str = None
-
     def __init__(self):
         self._editable = True
+        # data of different bands
+        self._data: Dict = defaultdict()
+        self._n_rows: int = None
+        self._n_cols: int = None
+        # transformation
+        self.T: Affine = None
+        self.T_inv: Affine = None
+        self.pixel_size: List[float] = None
+        self.crs: rasterio.crs.CRS = None
+        # tiff file info
+        self.tiff_file: str = None
 
     def get_data(self, band=1) -> np.ndarray:
         out = self._data.get(band, None)
