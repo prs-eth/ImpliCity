@@ -6,7 +6,7 @@ This repository provides the code to train and evaluate ImpliCity: a method that
 (DSMs) from raw photogrammetric 3D point clouds and ortho-images with the help of an implicit neural 3D scene representation.
 It represents the official implementation of the paper:
 
-### [ImpliCity: City Modeling from Satellite Images with Deep Implicit Occupancy Fields](https://arxiv.org/abs/2201.09968)
+## [ImpliCity: City Modeling from Satellite Images with Deep Implicit Occupancy Fields](https://doi.org/10.5194/isprs-annals-V-2-2022-193-2022)
 Corinne Stucker, Bingxin Ke, Yuanwen Yue, Shengyu Huang, Iro Armeni, Konrad Schindler
 
 > Abstract: *High-resolution optical satellite sensors, combined with dense stereo algorithms, have made it possible to reconstruct 
@@ -18,6 +18,7 @@ of the point cloud and a stereo pair of ortho-photos. We show that this represen
 with image resolution 0.5m, ImpliCity reaches a median height error of ≈0.7 m and outperforms competing methods, especially w.r.t. 
 building reconstruction, featuring intricate roof details, smooth surfaces, and straight, regular outlines.*
 
+[[supplementary]](https://arxiv.org/abs/2201.09968), [[video]](https://www.youtube.com/watch?v=7cheMxWhmjI)
 
 ## Requirements
 The code has been developed and tested with:
