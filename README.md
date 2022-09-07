@@ -22,10 +22,7 @@ building reconstruction, featuring intricate roof details, smooth surfaces, and 
 
 ## Requirements
 The code has been developed and tested with:
-* Ubuntu 20.04.4 LTS
-* Python 3.8.10
-* PyTorch 1.10.0
-* CUDA 10.2
+* Ubuntu 20.04.4 LTS, Python 3.8.10, PyTorch 1.10.0, CUDA 10.2
 
 
 ## Installation
@@ -191,3 +188,9 @@ If you find our code or work useful, please cite:
 }
 ```
 
+## Acknowledgements
+In this project we use (parts of) the official implementations of the following works:
+- [ConvONet](https://github.com/autonomousvision/convolutional_occupancy_networks)
+- [PIFu](https://github.com/shunsukesaito/PIFu)
+
+We thank the respective authors for open sourcing and maintenance.
